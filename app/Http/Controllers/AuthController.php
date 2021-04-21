@@ -26,8 +26,12 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
+        $validate = $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
