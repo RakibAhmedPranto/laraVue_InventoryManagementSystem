@@ -14,6 +14,12 @@ window.User = User;
 import Swal from 'sweetalert2'
 window.Swal = Swal;
 
+//import Notification
+
+import Notification from './Helpers/Notification';
+window.Notification = Notification;
+
+
 const Toast = Swal.mixin({
   toast: true,
   position: 'top-end',
