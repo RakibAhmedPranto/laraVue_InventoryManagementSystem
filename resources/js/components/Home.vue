@@ -1,4 +1,6 @@
-        <!-- Container Fluid-->
+<template>
+    <div class="">
+                <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
@@ -306,3 +308,16 @@
 
         </div>
         <!---Container Fluid-->
+
+    </div>
+</template>
+
+<script type="text/javascript">
+ export default{
+     created(){
+         if(!User.loggedIn()){
+             this.$router.push({name:'/'})
+         }
+     },
+ }
+</script>
