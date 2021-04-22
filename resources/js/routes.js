@@ -10,6 +10,7 @@ let home = require('./components/Home.vue').default;
 
 //Employee Components
 let employeeCreate = require('./components/employee/create.vue').default;
+let employeeEdit = require('./components/employee/edit.vue').default;
 let employeeIndex = require('./components/employee/index.vue').default;
 
 
@@ -19,6 +20,9 @@ export const routes = [
     { path: '/forget', component: forget, name:'forget' },
     { path: '/logout', component: logout, name:'logout' },
     { path: '/home', component: home, name:'home' },
+
+    //employee routes
     { path: '/employee/create', component: employeeCreate, name:'employee.create' },
+    { path: '/employee/edit/:id', component: employeeEdit, name:'employee.edit' },
     { path: '/employee', component: employeeIndex, name:'employee' },
   ]

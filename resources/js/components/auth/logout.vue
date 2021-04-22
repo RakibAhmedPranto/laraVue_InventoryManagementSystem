@@ -8,7 +8,7 @@
             localStorage.removeItem('user');
             Toast.fire({
             icon: 'success',
-            title: 'Registered and Signed in successfully'
+            title: 'Logged Out successfully'
             });
         this.$router.push({name:'/'});
      }
