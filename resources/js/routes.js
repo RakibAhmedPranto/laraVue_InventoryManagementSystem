@@ -12,6 +12,10 @@ let home = require('./components/Home.vue').default;
 let employeeCreate = require('./components/employee/create.vue').default;
 let employeeEdit = require('./components/employee/edit.vue').default;
 let employeeIndex = require('./components/employee/index.vue').default;
+//Supplier Components
+let supplierCreate = require('./components/supplier/create.vue').default;
+let supplierEdit = require('./components/supplier/edit.vue').default;
+let supplierIndex = require('./components/supplier/index.vue').default;
 
 
 export const routes = [
@@ -25,4 +29,8 @@ export const routes = [
     { path: '/employee/create', component: employeeCreate, name:'employee.create' },
     { path: '/employee/edit/:id', component: employeeEdit, name:'employee.edit' },
     { path: '/employee', component: employeeIndex, name:'employee' },
+    //supplier routes
+    { path: '/supplier/create', component: supplierCreate, name:'supplier.create' },
+    { path: '/supplier/edit/:id', component: supplierEdit, name:'supplier.edit' },
+    { path: '/supplier', component: supplierIndex, name:'supplier' },
   ]
