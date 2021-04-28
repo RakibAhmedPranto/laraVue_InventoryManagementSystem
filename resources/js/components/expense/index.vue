@@ -1,10 +1,10 @@
 <template>
-  
+
   <div>
 
  <div class="row">
-  <router-link to="/employee/create" class="btn btn-primary">Add Employee </router-link>
-   
+  <router-link to="/expense/create" class="btn btn-primary">Add Expense </router-link>
+
  </div>
 <br>
    <input type="text" v-model="searchTerm" class="form-control" style="width: 300px;" placeholder="Search Here">
@@ -17,33 +17,29 @@
               <!-- Simple Tables -->
               <div class="card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Employee List</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Expense List</h6>
                 </div>
                 <div class="table-responsive">
                   <table class="table align-items-center table-flush">
                     <thead class="thead-light">
                       <tr>
-                        <th>Name</th>
-                        <th>Photo</th>
-                        <th>Phone</th>
-                        <th>Sallery</th>
-                        <th>Joining Date</th>
-                        <th>Action</th>
+                        <th>Details</th>
+                        <th>Amount </th>
+                        <th>Date</th>
+                          <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="employee in filterSearch" :key="employee.id">
-                        <td> {{ employee.name }} </td>
-                        <td><img :src="employee.photo" id="em_photo"></td>
-                        <td>{{ employee.phone }}</td>
-                        <td>{{ employee.sallery }}</td>
-                        <td>{{ employee.joining_date }}</td>
+                      <tr v-for="expense in filterSearch" :key="expense.id">
+                        <td> {{ expense.details }} </td>
+                        <td> {{ expense.amount }} </td>
+                        <td> {{ expense.expense_date }} </td>
             <td>
-   <router-link :to="{name:'employee.edit', params:{id:employee.id}}" class="btn btn-sm btn-primary">Edit</router-link>
- <a @click="deleteEmployee(employee.id)" class="btn btn-sm btn-danger"><font color="#ffffff">Delete</font></a>
+   <router-link :to="{name:'expense.edit', params:{id:expense.id}}" class="btn btn-sm btn-primary">Edit</router-link>
+ <a @click="deleteExpense(expense.id)" class="btn btn-sm btn-danger"><font color="#ffffff">Delete</font></a>
             </td>
                       </tr>
-                    
+
                     </tbody>
                   </table>
                 </div>
@@ -54,7 +50,7 @@
           <!--Row-->
 
 
-   
+
   </div>
 
 
@@ -69,25 +65,25 @@
      },
 	 data(){
 		 return{
-			 employees:[],
+			 expenses:[],
 			 searchTerm:'',
 		 }
 	 },
 
 	 computed:{
 		 filterSearch(){
-			 return this.employees.filter(employee =>{
-				 return employee.phone.match(this.searchTerm)
+			 return this.expenses.filter(expense =>{
+				 return expense.expense_date.match(this.searchTerm)
 			 })
 		 }
 	 },
      methods:{
-		 allEmployees(){
-			 axios.get('/api/employee/')
-			 .then(({data})=>(this.employees = data))
+		 allExpenses(){
+			 axios.get('/api/expense/')
+			 .then(({data})=>(this.expenses = data))
 			 .catch()
 		 },
-		 deleteEmployee(id){
+		 deleteExpense(id){
 			 Swal.fire({
 				title: 'Are you sure?',
 				text: "You won't be able to revert this!",
@@ -98,14 +94,14 @@
 				confirmButtonText: 'Yes, delete it!'
 				}).then((result) => {
 				if (result.isConfirmed) {
-					axios.delete('/api/employee/'+id)
+					axios.delete('/api/expense/'+id)
 					.then(()=>{
-						this.employees = this.employees.filter(employee=>{
-							return employee.id != id
+						this.expenses = this.expenses.filter(expense=>{
+							return expense.id != id
 						})
 					})
 					.catch(()=>{
-						$this.$router.push({name:'employee'})
+						$this.$router.push({name:'expense'})
 					})
 					Swal.fire(
 					'Deleted!',
@@ -117,12 +113,12 @@
 		 },
      },
 	 created(){
-			 this.allEmployees();
+			 this.allExpenses();
 		 }
  }
 </script>
 
-<style type="text/css">
+<style scoped>
 	 #em_photo{
     height: 40px;
     width: 40px;

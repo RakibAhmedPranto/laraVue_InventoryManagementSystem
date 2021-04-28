@@ -138,4 +138,18 @@ class ProductController extends Controller
         DB::table('products')->where('id',$id)->delete();
        }
     }
+
+    public function updateStock(Request $request, $id){
+        $validate = $request->validate([
+            'product_quantity' => 'required',
+        ]);
+
+        //                 echo '<pre>';
+        // print_r($request->all());
+        // exit;
+        
+        $target = Product::where('id',$id)->first();
+        $target->product_quantity = $request->product_quantity;
+        $target->save();
+    }
 }

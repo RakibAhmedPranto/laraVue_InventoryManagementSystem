@@ -1,9 +1,11 @@
+
+
 <template>
   
   <div>
 
  <div class="row">
-  <router-link to="/employee/create" class="btn btn-primary">Add Employee </router-link>
+  <router-link to="/store-employee" class="btn btn-primary">Add Employee </router-link>
    
  </div>
 <br>
@@ -32,15 +34,16 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="employee in filterSearch" :key="employee.id">
+                      <tr v-for="employee in filtersearch" :key="employee.id">
                         <td> {{ employee.name }} </td>
                         <td><img :src="employee.photo" id="em_photo"></td>
                         <td>{{ employee.phone }}</td>
                         <td>{{ employee.sallery }}</td>
                         <td>{{ employee.joining_date }}</td>
             <td>
-   <router-link :to="{name:'employee.edit', params:{id:employee.id}}" class="btn btn-sm btn-primary">Edit</router-link>
- <a @click="deleteEmployee(employee.id)" class="btn btn-sm btn-danger"><font color="#ffffff">Delete</font></a>
+   <router-link :to="{name: 'salary.pay', params:{id:employee.id}}" class="btn btn-sm btn-primary">Pay Salary</router-link>
+
+  
             </td>
                       </tr>
                     
@@ -60,70 +63,49 @@
 
 </template>
 
-<script type="text/javascript">
- export default{
-   created(){
-         if(!User.loggedIn()){
-             this.$router.push({name:'/'})
-         }
-     },
-	 data(){
-		 return{
-			 employees:[],
-			 searchTerm:'',
-		 }
-	 },
 
-	 computed:{
-		 filterSearch(){
-			 return this.employees.filter(employee =>{
-				 return employee.phone.match(this.searchTerm)
-			 })
-		 }
-	 },
-     methods:{
-		 allEmployees(){
-			 axios.get('/api/employee/')
-			 .then(({data})=>(this.employees = data))
-			 .catch()
-		 },
-		 deleteEmployee(id){
-			 Swal.fire({
-				title: 'Are you sure?',
-				text: "You won't be able to revert this!",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, delete it!'
-				}).then((result) => {
-				if (result.isConfirmed) {
-					axios.delete('/api/employee/'+id)
-					.then(()=>{
-						this.employees = this.employees.filter(employee=>{
-							return employee.id != id
-						})
-					})
-					.catch(()=>{
-						$this.$router.push({name:'employee'})
-					})
-					Swal.fire(
-					'Deleted!',
-					'Your file has been deleted.',
-					'success'
-					)
-				}
-				})
-		 },
-     },
-	 created(){
-			 this.allEmployees();
-		 }
- }
+
+<script type="text/javascript">
+  
+  export default {
+    created(){
+      if (!User.loggedIn()) {
+        this.$router.push({name: '/'})
+      }
+    },
+    data(){
+      return{
+        employees:[],
+        searchTerm:''
+      }
+    },
+    computed:{
+      filtersearch(){
+      return this.employees.filter(employee => {
+         return employee.name.match(this.searchTerm)
+      }) 
+      }
+    },
+ 
+  methods:{
+    allEmployee(){
+      axios.get('/api/employee/')
+      .then(({data}) => (this.employees = data))
+      .catch()
+    },
+    
+  },
+  created(){
+    this.allEmployee();
+  } 
+  
+
+  } 
 </script>
 
-<style type="text/css">
-	 #em_photo{
+
+<style scoped>
+  #em_photo{
     height: 40px;
     width: 40px;
   }

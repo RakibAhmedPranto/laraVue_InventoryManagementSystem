@@ -107,6 +107,47 @@
                         </div>
                       </li>
 
+                      <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExpense"
+                          aria-expanded="true" aria-controls="collapseBootstrap">
+                          <i class="far fa-fw fa-window-maximize"></i>
+                          <span>Expense</span>
+                        </a>
+                        <div id="collapseExpense" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+                          <div class="bg-white py-2 collapse-inner rounded">
+                            <router-link to="/expense" class="collapse-item">All Expense</router-link>
+                            <router-link to="/expense/create" class="collapse-item">Add Expense</router-link>
+                          </div>
+                        </div>
+                      </li>
+
+
+                      <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSalary"
+                          aria-expanded="true" aria-controls="collapseBootstrap">
+                          <i class="far fa-fw fa-window-maximize"></i>
+                          <span>Salary</span>
+                        </a>
+                        <div id="collapseSalary" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+                          <div class="bg-white py-2 collapse-inner rounded">
+                            <router-link to="/salary" class="collapse-item">All Salary</router-link>
+                            <router-link to="/salary/given" class="collapse-item">Add Salary</router-link>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStock"
+                          aria-expanded="true" aria-controls="collapseBootstrap">
+                          <i class="far fa-fw fa-window-maximize"></i>
+                          <span>Stock</span>
+                        </a>
+                        <div id="collapseStock" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+                          <div class="bg-white py-2 collapse-inner rounded">
+                            <router-link to="/stock" class="collapse-item">Produck Stock</router-link>
+                          </div>
+                        </div>
+                      </li>
+
                     <li class="nav-item">
                       <a class="nav-link" href="forms.html">
                         <i class="fab fa-fw fa-wpforms"></i>
