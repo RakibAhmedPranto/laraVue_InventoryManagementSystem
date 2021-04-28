@@ -24,6 +24,10 @@ let categoryIndex = require('./components/category/index.vue').default;
 let productCreate = require('./components/product/create.vue').default;
 let productEdit = require('./components/product/edit.vue').default;
 let productIndex = require('./components/product/index.vue').default;
+//Customer Components
+let customerCreate = require('./components/customer/create.vue').default;
+let customerEdit = require('./components/customer/edit.vue').default;
+let customerIndex = require('./components/customer/index.vue').default;
 
 
 export const routes = [
@@ -49,4 +53,8 @@ export const routes = [
     { path: '/product/create', component: productCreate, name:'product.create' },
     { path: '/product/edit/:id', component: productEdit, name:'product.edit' },
     { path: '/product', component: productIndex, name:'product' },
+    //customer routes
+    { path: '/customer/create', component: customerCreate, name:'customer.create' },
+    { path: '/customer/edit/:id', component: customerEdit, name:'customer.edit' },
+    { path: '/customer', component: customerIndex, name:'customer' },
   ]

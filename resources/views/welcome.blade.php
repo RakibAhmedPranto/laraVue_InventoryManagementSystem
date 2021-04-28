@@ -93,6 +93,20 @@
                         </div>
                       </li>
 
+                      <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCustomer"
+                          aria-expanded="true" aria-controls="collapseBootstrap">
+                          <i class="far fa-fw fa-window-maximize"></i>
+                          <span>Customer</span>
+                        </a>
+                        <div id="collapseCustomer" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+                          <div class="bg-white py-2 collapse-inner rounded">
+                            <router-link to="/customer" class="collapse-item">All Customer</router-link>
+                            <router-link to="/customer/create" class="collapse-item">Add Customer</router-link>
+                          </div>
+                        </div>
+                      </li>
+
                     <li class="nav-item">
                       <a class="nav-link" href="forms.html">
                         <i class="fab fa-fw fa-wpforms"></i>
