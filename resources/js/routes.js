@@ -48,6 +48,11 @@ let paySalary = require('./components/salary/create.vue').default;
 let allSalary = require('./components/salary/index.vue').default;
 let salaryDetail = require('./components/salary/salaryDetail.vue').default;
 
+//pos
+
+let pos = require('./components/pos/index.vue').default;
+
+
 
 export const routes = [
     { path: '/', component: login, name:'/' },
@@ -89,5 +94,8 @@ export const routes = [
     //srock routes
     { path: '/stock/update/:id', component: stockUpdate, name:'stock.update' },
     { path: '/stock', component: stockIndex, name:'stock' },
+
+    //pos
+    { path: '/pos', component: pos, name:'pos' },
 
   ]

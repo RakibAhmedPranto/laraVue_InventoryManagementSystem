@@ -31,3 +31,5 @@ Route::Get('/salary/view/{id}','SalaryController@viewSalary');
 
 
 Route::Post('/product/updateStock/{id}','ProductController@updateStock');
+
+Route::Get('/categoryWiseProduct/{id}','PosController@categoryWiseProduct');
