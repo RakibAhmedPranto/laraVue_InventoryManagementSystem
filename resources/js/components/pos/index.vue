@@ -168,6 +168,7 @@
      created(){
 			 this.allProducts();
              this.allCategories();
+             this.allCustomers();
 		 },
 	 data(){
 		 return{
@@ -176,6 +177,8 @@
 			 searchTerm:'',
 			 categoryWiseSearchTerm:'',
              categories:'',
+             customers:'',
+             
 		 }
 	 },
 
@@ -200,6 +203,11 @@
          allCategories(){
 			 axios.get('/api/category/')
 			 .then(({data})=>(this.categories = data))
+			 .catch()
+		 },
+         allCustomers(){
+			 axios.get('/api/customer/')
+			 .then(({data})=>(this.customers = data))
 			 .catch()
 		 },
          categoryWiseProduct(id){

@@ -4558,13 +4558,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 }, _defineProperty(_created$created$data, "created", function created() {
   this.allProducts();
   this.allCategories();
+  this.allCustomers();
 }), _defineProperty(_created$created$data, "data", function data() {
   return {
     products: [],
     catProducts: [],
     searchTerm: '',
     categoryWiseSearchTerm: '',
-    categories: ''
+    categories: '',
+    customers: ''
   };
 }), _defineProperty(_created$created$data, "computed", {
   filterSearch: function filterSearch() {
@@ -4598,12 +4600,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return _this4.categories = data;
     })["catch"]();
   },
-  categoryWiseProduct: function categoryWiseProduct(id) {
+  allCustomers: function allCustomers() {
     var _this5 = this;
 
-    axios.get('/api/categoryWiseProduct/' + id).then(function (_ref3) {
+    axios.get('/api/customer/').then(function (_ref3) {
       var data = _ref3.data;
-      return _this5.catProducts = data;
+      return _this5.customers = data;
+    })["catch"]();
+  },
+  categoryWiseProduct: function categoryWiseProduct(id) {
+    var _this6 = this;
+
+    axios.get('/api/categoryWiseProduct/' + id).then(function (_ref4) {
+      var data = _ref4.data;
+      return _this6.catProducts = data;
     })["catch"]();
   }
 }), _created$created$data);
