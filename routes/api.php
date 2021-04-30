@@ -33,3 +33,10 @@ Route::Get('/salary/view/{id}','SalaryController@viewSalary');
 Route::Post('/product/updateStock/{id}','ProductController@updateStock');
 
 Route::Get('/categoryWiseProduct/{id}','PosController@categoryWiseProduct');
+
+
+Route::Get('/cart/addToCart/{id}','CartController@addToCart');
+Route::Get('/cart/cartContent','CartController@cartContent');
+Route::Get('/cart/remove/{id}','CartController@removeCartItem');
+Route::Get('/cart/increment/{id}','CartController@incrementCartItem');
+Route::Get('/cart/decrement/{id}','CartController@decrementCartItem');

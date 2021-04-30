@@ -27,12 +27,16 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td><a href="#">Name</a></td>
-                        <td>Qty</td>
-                        <td>Unit</td>
-                        <td><span class="badge badge-success">X</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
+                      <tr v-for="cart in cartContents" :key="cart.id">
+                        <td>{{ cart.pro_name }}</td>
+                        <td><input type="text" readonly="" style="width: 15px;" :value="cart.pro_quantity">
+                            <button @click.prevent="increment(cart.pro_id)" class="btn btn-sm btn-success">+</button>
+                            <button  @click.prevent="decrement(cart.pro_id)" class="btn btn-sm btn-danger" v-if="cart.pro_quantity >= 2">-</button>
+                            <button class="btn btn-sm btn-danger" v-else="" disabled="">-</button>
+                        </td>
+                        <td>{{ cart.product_price  }}</td>
+                        <td>{{ cart.sub_total }}</td>
+                        <td><a @click="removeItem(cart.id)" class="btn btn-sm btn-primary"><font color="#ffffff">X</font></a></td>
                       </tr>
                       
                     </tbody>
@@ -43,17 +47,10 @@
 
                     <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between align-items-center">Total Quantity:
-                    <strong>10</strong>
-                    </li>
-                      <li class="list-group-item d-flex justify-content-between align-items-center">Sub Total:
-                    <strong>20 $</strong>
-                    </li>
-
-                      <li class="list-group-item d-flex justify-content-between align-items-center">Vat:
-                    <strong>5 %</strong>
+                    <strong>{{ qty }}</strong>
                     </li>
                       <li class="list-group-item d-flex justify-content-between align-items-center">Total :
-                    <strong>100 $</strong>
+                    <strong>{{ subtotal }} $</strong>
                     </li> 
                     
                   </ul>   
@@ -112,7 +109,7 @@
                                 <input type="text" v-model="searchTerm" class="form-control" style="width: 560px;" placeholder="Search Product">
                                 <div class="row">
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-6" v-for="product in filterSearch" :key="product.id">
-                                        <button class="btn btn-sm" @click.prevent="AddToCart(product.id)">
+                                        <button class="btn btn-sm" @click.prevent="addToCart(product.id)">
                                             <div class="card" style="width: 8.5rem; margin-bottom: 5px;">
                                             <img :src="product.image" id="em_photo" class="card-img-top">
                                             <div class="card-body">
@@ -131,7 +128,7 @@
                         <input type="text" v-model="categoryWiseSearchTerm" class="form-control" style="width: 560px;" placeholder="Search Product">
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-6" v-for="getproduct in getFilterSearch" :key="getproduct.id">
-                                    <button class="btn btn-sm" @click.prevent="AddToCart(getproduct.id)">
+                                    <button class="btn btn-sm" @click.prevent="addToCart(getproduct.id)">
                                         <div class="card" style="width: 8.5rem; margin-bottom: 5px;">
                                             <img :src="getproduct.image" id="em_photo" class="card-img-top">
                                             <div class="card-body">
@@ -169,6 +166,10 @@
 			 this.allProducts();
              this.allCategories();
              this.allCustomers();
+             this.cartContent();
+             Reload.$on('afterAdd',()=>{
+                 this.cartContent();
+             })
 		 },
 	 data(){
 		 return{
@@ -178,6 +179,7 @@
 			 categoryWiseSearchTerm:'',
              categories:'',
              customers:'',
+             cartContents:[],
              
 		 }
 	 },
@@ -192,9 +194,59 @@
 			 return this.catProducts.filter(catProducts =>{
 				 return catProducts.product_name.match(this.categoryWiseSearchTerm)
 			 })
-		 }
+		 },qty(){
+            let sum = 0;
+            for(let i = 0; i < this.cartContents.length; i++){
+                sum += (parseFloat(this.cartContents[i].pro_quantity));      
+                }
+                return sum;
+        },
+        subtotal(){
+            let sum = 0;
+            for(let i = 0; i < this.cartContents.length; i++){
+            sum += (parseFloat(this.cartContents[i].pro_quantity) * parseFloat(this.cartContents[i].product_price));      
+            }
+            return sum;
+        },
 	 },
      methods:{
+         addToCart(id){
+             axios.get('/api/cart/addToCart/'+id)
+			 .then(()=>{
+                 Reload.$emit('afterAdd');
+                 Notification.success();
+             })
+			 .catch()
+         },
+         cartContent(){
+             axios.get('/api/cart/cartContent/')
+			 .then(({data})=>(this.cartContents = data))
+			 .catch()
+         },
+         removeItem(id){
+            axios.get('/api/cart/remove/'+id)
+            .then(() => {
+                Reload.$emit('afterAdd');
+                Notification.success()
+            })
+            .catch()
+        },
+        increment(id){
+            axios.get('/api/cart/increment/'+id)
+            .then(() => {
+                Reload.$emit('afterAdd');
+                Notification.success()
+            })
+            .catch()
+        },
+        decrement(id){
+            axios.get('/api/cart/decrement/'+id)
+            .then(() => {
+                Reload.$emit('afterAdd');
+                Notification.success()
+            })
+            .catch()
+        },
 		 allProducts(){
 			 axios.get('/api/product/')
 			 .then(({data})=>(this.products = data))

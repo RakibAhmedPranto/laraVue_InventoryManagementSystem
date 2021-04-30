@@ -4544,9 +4544,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = (_created$created$data = {
   created: function created() {
     if (!User.loggedIn()) {
@@ -4556,9 +4553,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }
 }, _defineProperty(_created$created$data, "created", function created() {
+  var _this = this;
+
   this.allProducts();
   this.allCategories();
   this.allCustomers();
+  this.cartContent();
+  Reload.$on('afterAdd', function () {
+    _this.cartContent();
+  });
 }), _defineProperty(_created$created$data, "data", function data() {
   return {
     products: [],
@@ -4566,54 +4569,105 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     searchTerm: '',
     categoryWiseSearchTerm: '',
     categories: '',
-    customers: ''
+    customers: '',
+    cartContents: []
   };
 }), _defineProperty(_created$created$data, "computed", {
   filterSearch: function filterSearch() {
-    var _this = this;
+    var _this2 = this;
 
     return this.products.filter(function (product) {
-      return product.product_name.match(_this.searchTerm);
+      return product.product_name.match(_this2.searchTerm);
     });
   },
   getFilterSearch: function getFilterSearch() {
-    var _this2 = this;
-
-    return this.catProducts.filter(function (catProducts) {
-      return catProducts.product_name.match(_this2.categoryWiseSearchTerm);
-    });
-  }
-}), _defineProperty(_created$created$data, "methods", {
-  allProducts: function allProducts() {
     var _this3 = this;
 
-    axios.get('/api/product/').then(function (_ref) {
+    return this.catProducts.filter(function (catProducts) {
+      return catProducts.product_name.match(_this3.categoryWiseSearchTerm);
+    });
+  },
+  qty: function qty() {
+    var sum = 0;
+
+    for (var i = 0; i < this.cartContents.length; i++) {
+      sum += parseFloat(this.cartContents[i].pro_quantity);
+    }
+
+    return sum;
+  },
+  subtotal: function subtotal() {
+    var sum = 0;
+
+    for (var i = 0; i < this.cartContents.length; i++) {
+      sum += parseFloat(this.cartContents[i].pro_quantity) * parseFloat(this.cartContents[i].product_price);
+    }
+
+    return sum;
+  }
+}), _defineProperty(_created$created$data, "methods", {
+  addToCart: function addToCart(id) {
+    axios.get('/api/cart/addToCart/' + id).then(function () {
+      Reload.$emit('afterAdd');
+      Notification.success();
+    })["catch"]();
+  },
+  cartContent: function cartContent() {
+    var _this4 = this;
+
+    axios.get('/api/cart/cartContent/').then(function (_ref) {
       var data = _ref.data;
-      return _this3.products = data;
+      return _this4.cartContents = data;
+    })["catch"]();
+  },
+  removeItem: function removeItem(id) {
+    axios.get('/api/cart/remove/' + id).then(function () {
+      Reload.$emit('afterAdd');
+      Notification.success();
+    })["catch"]();
+  },
+  increment: function increment(id) {
+    axios.get('/api/cart/increment/' + id).then(function () {
+      Reload.$emit('afterAdd');
+      Notification.success();
+    })["catch"]();
+  },
+  decrement: function decrement(id) {
+    axios.get('/api/cart/decrement/' + id).then(function () {
+      Reload.$emit('afterAdd');
+      Notification.success();
+    })["catch"]();
+  },
+  allProducts: function allProducts() {
+    var _this5 = this;
+
+    axios.get('/api/product/').then(function (_ref2) {
+      var data = _ref2.data;
+      return _this5.products = data;
     })["catch"]();
   },
   allCategories: function allCategories() {
-    var _this4 = this;
+    var _this6 = this;
 
-    axios.get('/api/category/').then(function (_ref2) {
-      var data = _ref2.data;
-      return _this4.categories = data;
+    axios.get('/api/category/').then(function (_ref3) {
+      var data = _ref3.data;
+      return _this6.categories = data;
     })["catch"]();
   },
   allCustomers: function allCustomers() {
-    var _this5 = this;
+    var _this7 = this;
 
-    axios.get('/api/customer/').then(function (_ref3) {
-      var data = _ref3.data;
-      return _this5.customers = data;
+    axios.get('/api/customer/').then(function (_ref4) {
+      var data = _ref4.data;
+      return _this7.customers = data;
     })["catch"]();
   },
   categoryWiseProduct: function categoryWiseProduct(id) {
-    var _this6 = this;
+    var _this8 = this;
 
-    axios.get('/api/categoryWiseProduct/' + id).then(function (_ref4) {
-      var data = _ref4.data;
-      return _this6.catProducts = data;
+    axios.get('/api/categoryWiseProduct/' + id).then(function (_ref5) {
+      var data = _ref5.data;
+      return _this8.catProducts = data;
     })["catch"]();
   }
 }), _created$created$data);
@@ -54642,10 +54696,128 @@ var render = function() {
             _c("div", { staticClass: "card" }, [
               _vm._m(1),
               _vm._v(" "),
-              _vm._m(2),
+              _c(
+                "div",
+                {
+                  staticClass: "table-responsive",
+                  staticStyle: { "font-size": "12px" }
+                },
+                [
+                  _c(
+                    "table",
+                    { staticClass: "table align-items-center table-flush" },
+                    [
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.cartContents, function(cart) {
+                          return _c("tr", { key: cart.id }, [
+                            _c("td", [_vm._v(_vm._s(cart.pro_name))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                staticStyle: { width: "15px" },
+                                attrs: { type: "text", readonly: "" },
+                                domProps: { value: cart.pro_quantity }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-sm btn-success",
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.increment(cart.pro_id)
+                                    }
+                                  }
+                                },
+                                [_vm._v("+")]
+                              ),
+                              _vm._v(" "),
+                              cart.pro_quantity >= 2
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-sm btn-danger",
+                                      on: {
+                                        click: function($event) {
+                                          $event.preventDefault()
+                                          return _vm.decrement(cart.pro_id)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("-")]
+                                  )
+                                : _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-sm btn-danger",
+                                      attrs: { disabled: "" }
+                                    },
+                                    [_vm._v("-")]
+                                  )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(cart.product_price))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(cart.sub_total))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "btn btn-sm btn-primary",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.removeItem(cart.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("font", { attrs: { color: "#ffffff" } }, [
+                                    _vm._v("X")
+                                  ])
+                                ],
+                                1
+                              )
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ]
+                  )
+                ]
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "card-footer" }, [
-                _vm._m(3),
+                _c("ul", { staticClass: "list-group" }, [
+                  _c(
+                    "li",
+                    {
+                      staticClass:
+                        "list-group-item d-flex justify-content-between align-items-center"
+                    },
+                    [
+                      _vm._v("Total Quantity:\n                  "),
+                      _c("strong", [_vm._v(_vm._s(_vm.qty))])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    {
+                      staticClass:
+                        "list-group-item d-flex justify-content-between align-items-center"
+                    },
+                    [
+                      _vm._v("Total :\n                  "),
+                      _c("strong", [_vm._v(_vm._s(_vm.subtotal) + " $")])
+                    ]
+                  )
+                ]),
                 _vm._v(" "),
                 _c("br"),
                 _vm._v(" "),
@@ -54811,7 +54983,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "col-xl-7 col-lg-7 mb-4" }, [
             _c("div", { staticClass: "card" }, [
-              _vm._m(4),
+              _vm._m(3),
               _vm._v(" "),
               _c(
                 "ul",
@@ -54820,7 +54992,7 @@ var render = function() {
                   attrs: { id: "myTab", role: "tablist" }
                 },
                 [
-                  _vm._m(5),
+                  _vm._m(4),
                   _vm._v(" "),
                   _vm._l(_vm.categories, function(category) {
                     return _c(
@@ -54914,7 +55086,7 @@ var render = function() {
                                     on: {
                                       click: function($event) {
                                         $event.preventDefault()
-                                        return _vm.AddToCart(product.id)
+                                        return _vm.addToCart(product.id)
                                       }
                                     }
                                   },
@@ -55043,7 +55215,7 @@ var render = function() {
                                   on: {
                                     click: function($event) {
                                       $event.preventDefault()
-                                      return _vm.AddToCart(getproduct.id)
+                                      return _vm.addToCart(getproduct.id)
                                     }
                                   }
                                 },
@@ -55173,101 +55345,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "table-responsive", staticStyle: { "font-size": "12px" } },
-      [
-        _c("table", { staticClass: "table align-items-center table-flush" }, [
-          _c("thead", { staticClass: "thead-light" }, [
-            _c("tr", [
-              _c("th", [_vm._v("Name")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("QTY")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Unit")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Total")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tbody", [
-            _c("tr", [
-              _c("td", [_c("a", { attrs: { href: "#" } }, [_vm._v("Name")])]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Qty")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Unit")]),
-              _vm._v(" "),
-              _c("td", [
-                _c("span", { staticClass: "badge badge-success" }, [
-                  _vm._v("X")
-                ])
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-sm btn-primary",
-                    attrs: { href: "#" }
-                  },
-                  [_vm._v("Detail")]
-                )
-              ])
-            ])
-          ])
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "list-group" }, [
-      _c(
-        "li",
-        {
-          staticClass:
-            "list-group-item d-flex justify-content-between align-items-center"
-        },
-        [
-          _vm._v("Total Quantity:\n                  "),
-          _c("strong", [_vm._v("10")])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "li",
-        {
-          staticClass:
-            "list-group-item d-flex justify-content-between align-items-center"
-        },
-        [
-          _vm._v("Sub Total:\n                  "),
-          _c("strong", [_vm._v("20 $")])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "li",
-        {
-          staticClass:
-            "list-group-item d-flex justify-content-between align-items-center"
-        },
-        [_vm._v("Vat:\n                  "), _c("strong", [_vm._v("5 %")])]
-      ),
-      _vm._v(" "),
-      _c(
-        "li",
-        {
-          staticClass:
-            "list-group-item d-flex justify-content-between align-items-center"
-        },
-        [_vm._v("Total :\n                  "), _c("strong", [_vm._v("100 $")])]
-      )
+    return _c("thead", { staticClass: "thead-light" }, [
+      _c("tr", [
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("QTY")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Unit")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
+      ])
     ])
   },
   function() {
@@ -74343,6 +74432,7 @@ var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
   }
 });
 window.Toast = Toast;
+window.Reload = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: _routes__WEBPACK_IMPORTED_MODULE_2__["routes"],
   mode: 'history'
