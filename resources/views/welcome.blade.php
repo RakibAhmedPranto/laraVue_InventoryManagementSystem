@@ -33,6 +33,14 @@
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span></router-link>
                     </li>
+
+                    <li class="nav-item active">
+                        <router-link to="/pos" class="nav-link">
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <span>POS</span>
+                        </router-link>
+                    </li>
+
                     <hr class="sidebar-divider">
                     <div class="sidebar-heading">
                       Features
@@ -136,6 +144,19 @@
                         </div>
                       </li>
                       <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOrder"
+                          aria-expanded="true" aria-controls="collapseBootstrap">
+                          <i class="far fa-fw fa-window-maximize"></i>
+                          <span>Order</span>
+                        </a>
+                        <div id="collapseOrder" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+                          <div class="bg-white py-2 collapse-inner rounded">
+                            <router-link to="/order/today" class="collapse-item">Today's Order</router-link>
+                            <router-link to="/order" class="collapse-item">All Order</router-link>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="nav-item">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStock"
                           aria-expanded="true" aria-controls="collapseBootstrap">
                           <i class="far fa-fw fa-window-maximize"></i>
@@ -147,13 +168,6 @@
                           </div>
                         </div>
                       </li>
-
-                    <li class="nav-item">
-                      <router-link to="/pos" class="nav-link" href="forms.html">
-                        <i class="fab fa-fw fa-wpforms"></i>
-                        <span>POS</span>
-                      </router-link>
-                    </li>
                     <li class="nav-item">
                       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
                         aria-controls="collapseTable">

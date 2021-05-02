@@ -52,6 +52,10 @@ let salaryDetail = require('./components/salary/salaryDetail.vue').default;
 
 let pos = require('./components/pos/index.vue').default;
 
+//order
+let allOrder = require('./components/order/allOrder.vue').default;
+let newOrder = require('./components/order/newOrder.vue').default;
+let viewOrder = require('./components/order/viewOrder.vue').default;
 
 
 export const routes = [
@@ -97,5 +101,10 @@ export const routes = [
 
     //pos
     { path: '/pos', component: pos, name:'pos' },
+
+    //order
+    { path: '/order', component: allOrder, name:'order' },
+    { path: '/order/today', component: newOrder, name:'order.today' },
+    { path: '/order/view/:id', component: viewOrder, name:'order.view' },
 
   ]

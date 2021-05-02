@@ -1,12 +1,12 @@
 
 
 <template>
-  
+
   <div>
 
  <div class="row">
   <router-link to="/store-employee" class="btn btn-primary">Add Employee </router-link>
-   
+
  </div>
 <br>
    <input type="text" v-model="searchTerm" class="form-control" style="width: 300px;" placeholder="Search Here">
@@ -36,17 +36,17 @@
                     <tbody>
                       <tr v-for="employee in filtersearch" :key="employee.id">
                         <td> {{ employee.name }} </td>
-                        <td><img :src="employee.photo" id="em_photo"></td>
+                        <td><img :src="'/'+employee.photo" id="em_photo"></td>
                         <td>{{ employee.phone }}</td>
                         <td>{{ employee.sallery }}</td>
                         <td>{{ employee.joining_date }}</td>
             <td>
    <router-link :to="{name: 'salary.pay', params:{id:employee.id}}" class="btn btn-sm btn-primary">Pay Salary</router-link>
 
-  
+
             </td>
                       </tr>
-                    
+
                     </tbody>
                   </table>
                 </div>
@@ -57,7 +57,7 @@
           <!--Row-->
 
 
-   
+
   </div>
 
 
@@ -66,7 +66,7 @@
 
 
 <script type="text/javascript">
-  
+
   export default {
     created(){
       if (!User.loggedIn()) {
@@ -83,24 +83,24 @@
       filtersearch(){
       return this.employees.filter(employee => {
          return employee.name.match(this.searchTerm)
-      }) 
+      })
       }
     },
- 
+
   methods:{
     allEmployee(){
       axios.get('/api/employee/')
       .then(({data}) => (this.employees = data))
       .catch()
     },
-    
+
   },
   created(){
     this.allEmployee();
-  } 
-  
+  }
 
-  } 
+
+  }
 </script>
 
 

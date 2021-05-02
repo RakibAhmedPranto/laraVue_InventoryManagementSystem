@@ -56,7 +56,7 @@
                   </ul>   
                     <br> 
 
-                    <form @submit.prevent="orderdone">
+                    <form @submit.prevent="orderDone">
                       <label>Customer Name</label>
                       <select class="form-control" v-model="customer_id">
                         <option :value="customer.id" v-for="customer in customers">{{customer.name }} </option>   
@@ -173,6 +173,10 @@
 		 },
 	 data(){
 		 return{
+             customer_id:'',
+             pay:'',
+             due:'',
+             payby:'',
 			 products:[],
 			 catProducts:[],
 			 searchTerm:'',
@@ -247,26 +251,34 @@
             })
             .catch()
         },
-		 allProducts(){
-			 axios.get('/api/product/')
-			 .then(({data})=>(this.products = data))
-			 .catch()
-		 },
-         allCategories(){
-			 axios.get('/api/category/')
-			 .then(({data})=>(this.categories = data))
-			 .catch()
-		 },
-         allCustomers(){
-			 axios.get('/api/customer/')
-			 .then(({data})=>(this.customers = data))
-			 .catch()
-		 },
-         categoryWiseProduct(id){
-			 axios.get('/api/categoryWiseProduct/'+id)
-			 .then(({data})=>(this.catProducts = data))
-			 .catch()
-		 },
+		allProducts(){
+			axios.get('/api/product/')
+			.then(({data})=>(this.products = data))
+			.catch()
+		},
+        allCategories(){
+            axios.get('/api/category/')
+            .then(({data})=>(this.categories = data))
+            .catch()
+        },
+        allCustomers(){
+            axios.get('/api/customer/')
+            .then(({data})=>(this.customers = data))
+            .catch()
+        },
+        categoryWiseProduct(id){
+            axios.get('/api/categoryWiseProduct/'+id)
+            .then(({data})=>(this.catProducts = data))
+            .catch()
+        },
+        orderDone(){
+            var data = {qty:this.qty, subtotal:this.subtotal, customer_id:this.customer_id, payby:this.payby, pay:this.pay, due:this.due}
+            axios.post('/api/order/done',data)
+            .then(() => {
+                Notification.success()
+                this.$router.push({name: 'home'})
+            })
+        }
 
      },
 
